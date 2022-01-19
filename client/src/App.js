@@ -3,8 +3,9 @@ import { createGlobalStyle } from 'styled-components';
 import background from './assets/background.jpg'
 import Header from "./components/Header";
 import Home from './pages/Home';
-import Feed from './pages/Feed';
+import Thread from './pages/Thread';
 import Profile from './pages/Profile';
+import Error from "./pages/Error";
 
 const GlobalStyle = createGlobalStyle`
     *,
@@ -20,10 +21,12 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
     }
     body {
-        background-image: url(${background});
+        /* background-image: url(${background}); */
+        background-color: #F6F6F6;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        min-height: 100vh;
     }
     h1 {
         font-family: 'Comfortaa', cursive;
@@ -46,8 +49,9 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" exact element={<Home />} />
-                <Route path="/feed" exact element={<Feed />} />
+                <Route path="/thread" exact element={<Thread />} />
                 <Route path="/profile" exact element={<Profile />} />
+                <Route path="*" element={<Error />} />
             </Routes>
         </BrowserRouter>
     );
