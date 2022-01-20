@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from 'styled-components'
+import avatar from "../assets/avatar.png"
 
 const PostsWrapper = styled.section`
     h2 {
@@ -15,17 +16,19 @@ const PostsWrapper = styled.section`
             border-radius: 20px;
             box-shadow: 0px 0px 7px 0px rgba(17, 17, 17, 0.555);
             margin-bottom: 25px;
-            div {
+            .contact {
                 display: flex;
-                img {
-                    height: 35px;
-                    width: 35px;
+                align-items: center;
+                margin-bottom: 10px;
+                &__avatar {
+                    height: 37px;
+                    width: 37px;
                     border-radius: 50%;
                     object-fit: cover;
                 }
-                h3 {
-                    font-weight: 500;
+                &__status {
                     padding: 0px 10px;
+                    font-weight: 300;
                 }
             }
             p {
@@ -40,7 +43,13 @@ const PostsWrapper = styled.section`
             }
             form {
                 display: flex;
-                justify-content: space-between;
+                img {
+                    height: 37px;
+                    width: 37px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    margin-bottom: inherit;
+                }
                 input {
                     all: unset;
                     height: 35px;
@@ -51,6 +60,7 @@ const PostsWrapper = styled.section`
                     background-color: #F6F6F6;
                     border: solid 1px #C0C0C0;
                     border-radius: 20px;
+                    margin-inline: 7px;
                 }
                 .submit-input {
                     text-transform: uppercase;
@@ -59,7 +69,6 @@ const PostsWrapper = styled.section`
                     background-color: #7093B2;
                     padding: 0px 15px;
                     border-radius: 20px;
-                    margin-left: 10px;
                     cursor: pointer;
                 }
             }
@@ -98,13 +107,20 @@ function Post() {
                 {posts.map((post) => {
                     return (
                         <li key={post._id}>
-                            <div>
-                                <img src={post.userImg} alt="avatar utilisateur" />
-                                <h3>{post.userName}</h3>
+                            <div className="contact">
+                                <img className="contact__avatar"
+                                    src={post.userImg}
+                                    alt="avatar contact"
+                                />
+                                <div className="contact__status">
+                                    <h3>{post.userName}</h3>
+                                    <p>Il y a 1h</p>
+                                </div>
                             </div>
                             <p>{post.userText}</p>
                             <img src={post.userFile} alt="illustration du post" />
                             <form action="" onSubmit={handleComment} id="comment-form">
+                                <img src={avatar} alt="avatar" />
                                 <input
                                     className="comment-input"
                                     type="text"
@@ -113,7 +129,7 @@ function Post() {
                                     name="commentaire"
                                     id="comment"
                                     onChange={(event) => setComment(event.target.value)}
-                                    value={post.comment}
+                                    value={comment}
                                 />
                                 <input
                                     className="submit-input"

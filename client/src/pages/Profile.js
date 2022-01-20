@@ -2,13 +2,22 @@ import { useState } from "react";
 import styled from 'styled-components'
 import camera from "../assets/camera.svg"
 import trash from "../assets/trash.svg"
+import avatar from "../assets/avatar.png"
 
 const ProfileWrapper = styled.main`
     padding: 25px 25px;
-    max-width: 700px;
+    max-width: 500px;
     margin: auto;
     h1 {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+    }
+    .avatar-display {
+        display: block;
+        margin: auto;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        margin-bottom: -75px;
     }
     form {
         display: flex;
@@ -27,6 +36,7 @@ const ProfileWrapper = styled.main`
             margin-bottom: 20px;
         }
         .avatar {
+            margin-top: 50px;
             &__input {
                 width: 0.1px;
                 height: 0.1px;
@@ -79,7 +89,7 @@ const ProfileWrapper = styled.main`
 `
 
 function Profile() {
-    const [avatar, setAvatar] = useState('');
+    const [photo, setPhoto] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -92,6 +102,10 @@ function Profile() {
     return (
         <ProfileWrapper>
             <h1>Profil</h1>
+            <img className="avatar-display"
+                src={avatar}
+                alt="avatar"
+            />
             <form action="" onSubmit={handleChanges} id="profile-form">
                 <div className="avatar">
                     <input
@@ -100,8 +114,8 @@ function Profile() {
                         aria-label="avatar"
                         name="avatar"
                         id="avatar"
-                        onChange={(event) => setAvatar(event.target.value)}
-                        value={avatar}
+                        onChange={(event) => setPhoto(event.target.value)}
+                        value={photo}
                     />
                     <label
                         className="avatar__label"

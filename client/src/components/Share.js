@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from 'styled-components'
 import upload from "../assets/upload.svg"
+import avatar from "../assets/avatar.png"
 
 const ShareWrapper = styled.section`
     h1 {
@@ -13,6 +14,21 @@ const ShareWrapper = styled.section`
         padding: 15px 15px;
         border-radius: 20px;
         box-shadow: 0px 0px 7px 0px rgba(17, 17, 17, 0.555);
+        .user {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            &__avatar {
+                height: 37px;
+                width: 37px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+            &__status {
+                padding: 0px 10px;
+                font-weight: 300;
+            }
+        }
         input {
             all: unset;
             height: 35px;
@@ -25,7 +41,7 @@ const ShareWrapper = styled.section`
             border-radius: 20px;
             margin-bottom: 10px;
         }
-        .buttons-wrapper {
+        .buttons {
             display: flex;
             justify-content: space-between;
             .upload-button {
@@ -73,6 +89,16 @@ function Share() {
         <ShareWrapper>
             <h1>Bienvenue</h1>
             <form action="" onSubmit={handleShare} id="login-form">
+                <div className="user">
+                    <img className="user__avatar"
+                        src={avatar}
+                        alt="avatar"
+                    />
+                    <div className="user__status">
+                        <h3>Utilisateur</h3>
+                        <p>En ligne</p>
+                    </div>
+                </div>
                 <input
                     className="text-input"
                     type="text"
@@ -83,7 +109,7 @@ function Share() {
                     onChange={(event) => setText(event.target.value)}
                     value={text}
                 />
-                <div className="buttons-wrapper">
+                <div className="buttons">
                     <div className="upload-button">
                         <input
                             className="upload-button__input"

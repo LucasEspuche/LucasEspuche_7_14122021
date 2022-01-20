@@ -4,7 +4,7 @@ import Post from "../components/Post";
 
 const ThreadWrapper = styled.main`
     padding: 25px 25px;
-    max-width: 700px;
+    max-width: 500px;
     margin: auto;
 `
 
