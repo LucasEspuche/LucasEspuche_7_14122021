@@ -1,6 +1,5 @@
-import { useState } from "react";
 import styled from 'styled-components'
-import avatar from "../assets/avatar.png"
+import Card from '../components/Card';
 
 const PostsWrapper = styled.section`
     h2 {
@@ -76,7 +75,7 @@ const PostsWrapper = styled.section`
     }
 `
 
-function Post() {
+function Posts() {
     const posts = [
         {
             _id: "076b47656h8Ot758h54",
@@ -94,50 +93,13 @@ function Post() {
         }
     ];
 
-    const [comment, setComment] = useState('');
-
-    function handleComment(event) {
-        event.preventDefault();
-    }
-
     return (
         <PostsWrapper>
             <h2>Derniers ajouts</h2>
             <ul>
                 {posts.map((post) => {
                     return (
-                        <li key={post._id}>
-                            <div className="contact">
-                                <img className="contact__avatar"
-                                    src={post.userImg}
-                                    alt="avatar contact"
-                                />
-                                <div className="contact__status">
-                                    <h3>{post.userName}</h3>
-                                    <p>Il y a 1h</p>
-                                </div>
-                            </div>
-                            <p>{post.userText}</p>
-                            <img src={post.userFile} alt="illustration du post" />
-                            <form action="" onSubmit={handleComment} id="comment-form">
-                                <img src={avatar} alt="avatar" />
-                                <input
-                                    className="comment-input"
-                                    type="text"
-                                    placeholder="Ecrire un commentaire..."
-                                    aria-label="commentaire"
-                                    name="commentaire"
-                                    id="comment"
-                                    onChange={(event) => setComment(event.target.value)}
-                                    value={comment}
-                                />
-                                <input
-                                    className="submit-input"
-                                    type="submit"
-                                    value="publier"
-                                />
-                            </form>
-                        </li>
+                        <Card post={post} key={post._id} />
                     )
                 })}
             </ul>
@@ -145,4 +107,4 @@ function Post() {
     );
 }
 
-export default Post;
+export default Posts;

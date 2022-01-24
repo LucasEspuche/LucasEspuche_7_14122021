@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Share from "../components/Share";
-import Post from "../components/Post";
+import Posts from "../components/Posts";
 
 const ThreadWrapper = styled.main`
     padding: 25px 25px;
@@ -12,7 +12,7 @@ function Thread() {
     return (
         <ThreadWrapper>
             <Share />
-            <Post />
+            <Posts />
         </ThreadWrapper>
     );
 }
