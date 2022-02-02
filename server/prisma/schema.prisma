@@ -8,30 +8,43 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  firstname String?
-  lastname  String?
-  email     String   @unique
+  id        Int       @id @default(autoincrement())
+  firstname String
+  lastname  String
+  email     String    @unique
   password  String
-  role      Role     @default(USER)
-  posts     Post[]
-  profile   Profile?
+  role      Role      @default(USER)
+  profile   Profile?  @relation("UserHasProfile")
+  posts     Post[]    @relation("UserAuthorsPost")
+  comments  Comment[] @relation("UserAuthorsComment")
 }
 
 model Profile {
-  id     Int    @id @default(autoincrement())
-  photo  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
+  id      Int    @id @default(autoincrement())
+  user    User   @relation("UserHasProfile", fields: [userId], references: [id])
+  userId  Int    @unique
+  userImg String
 }
 
 model Post {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  author      User      @relation("UserAuthorsPost", fields: [authorId], references: [id])
+  authorId    Int
+  title       String    @db.VarChar(255)
+  textContent String
+  imgContent  String
+  comments    Comment[] @relation("PostHasComment")
+}
+
+model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  title     String   @db.VarChar(255)
-  content   String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  author    User     @relation("UserAuthorsComment", fields: [authorId], references: [id])
+  authorId  Int
+  post      Post     @relation("PostHasComment", fields: [postId], references: [id])
+  postId    Int
+  content   String
 }
 
 enum Role {

@@ -6,8 +6,23 @@ function RegisterForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function handleRegister(event) {
+    async function handleRegister(event) {
         event.preventDefault();
+        await fetch('http://localhost:4000/api/user/signup', {
+            method: 'POST',
+            body: JSON.stringify({
+                "firstname": firstName,
+                "lastname": lastName,
+                "email": email,
+                "password": password
+            }),
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(res => res.json())
+            .then(res => {
+                alert("Vous êtes bien enregistré");
+                console.log(res);
+            });
     }
 
     return (

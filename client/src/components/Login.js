@@ -1,11 +1,30 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    let navigate = useNavigate();
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
+        await fetch('http://localhost:4000/api/user/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                "email": email,
+                "password": password
+            }),
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(res => res.json())
+            .then(res => {
+                localStorage.setItem("token", JSON.stringify(res));
+                alert("Vous êtes bien connecté");
+                navigate("/thread");
+            })
+            .catch(error => {
+                console.log("Erreur: " + error);
+            });
     }
 
     return (
