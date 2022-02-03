@@ -8,6 +8,10 @@ function LoginForm() {
 
     async function handleLogin(event) {
         event.preventDefault();
+
+        const emailError = document.querySelector(".email-error");
+        const passwordError = document.querySelector(".password-error");
+
         await fetch('http://localhost:4000/api/user/login', {
             method: 'POST',
             body: JSON.stringify({
@@ -18,9 +22,21 @@ function LoginForm() {
         })
             .then(res => res.json())
             .then(res => {
-                localStorage.setItem("token", JSON.stringify(res));
-                alert("Vous êtes bien connecté");
-                navigate("/thread");
+                if (res.emailError) {
+                    emailError.innerHTML =
+                        "Utilisateur non trouvé !";
+                    passwordError.innerHTML = '';
+                }
+                else if (res.passwordError) {
+                    passwordError.innerHTML =
+                        "Mot de passe incorrect !";
+                    emailError.innerHTML = '';
+                }
+                else {
+                    localStorage.setItem("token", JSON.stringify(res));
+                    alert("Vous êtes bien connecté");
+                    navigate("/thread");
+                };
             })
             .catch(error => {
                 console.log("Erreur: " + error);
@@ -38,6 +54,7 @@ function LoginForm() {
                 onChange={(event) => setEmail(event.target.value)}
                 value={email}
             />
+            <p className="email-error"></p>
             <input
                 type="password"
                 placeholder="Mot de passe"
@@ -47,6 +64,7 @@ function LoginForm() {
                 onChange={(event) => setPassword(event.target.value)}
                 value={password}
             />
+            <p className="password-error"></p>
             <input className="button"
                 type="submit"
                 value="suivant" />
