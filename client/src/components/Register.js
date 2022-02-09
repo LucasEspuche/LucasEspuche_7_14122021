@@ -5,9 +5,11 @@ function RegisterForm() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState({});
 
     async function handleRegister(event) {
         event.preventDefault();
+
         await fetch('http://localhost:4000/api/user/signup', {
             method: 'POST',
             body: JSON.stringify({
@@ -20,8 +22,16 @@ function RegisterForm() {
         })
             .then(res => res.json())
             .then(res => {
-                alert("Vous êtes bien enregistré");
-                console.log(res);
+                if (res.error) {
+                    setError(res.error);
+                }
+                else {
+                    alert("Vous êtes bien enregistré");
+                    console.log(res);
+                }
+            })
+            .catch(error => {
+                console.log("Erreur: " + error);
             });
     }
 
@@ -54,6 +64,7 @@ function RegisterForm() {
                 onChange={(event) => setEmail(event.target.value)}
                 value={email}
             />
+            {(error.type === "email") && <p>{error.message}</p>}
             <input
                 type="password"
                 placeholder="Mot de passe"
@@ -65,7 +76,9 @@ function RegisterForm() {
             />
             <input className="button"
                 type="submit"
-                value="suivant" />
+                value="suivant"
+            />
+            {(error.type === "form") && <p>{error.message}</p>}
         </form>
     );
 }

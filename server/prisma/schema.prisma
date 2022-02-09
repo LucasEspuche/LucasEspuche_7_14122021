@@ -31,7 +31,6 @@ model Post {
   createdAt   DateTime  @default(now())
   author      User      @relation("UserAuthorsPost", fields: [authorId], references: [id])
   authorId    Int
-  title       String    @db.VarChar(255)
   textContent String
   imgContent  String
   comments    Comment[] @relation("PostHasComment")

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,5 +14,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/api/user', userRoutes);
+app.use('/api/post', postRoutes);
 
 module.exports = app;

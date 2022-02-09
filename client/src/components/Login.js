@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    let navigate = useNavigate();
+    const [error, setError] = useState({});
+    const navigate = useNavigate();
 
     async function handleLogin(event) {
         event.preventDefault();
-
-        const emailError = document.querySelector(".email-error");
-        const passwordError = document.querySelector(".password-error");
 
         await fetch('http://localhost:4000/api/user/login', {
             method: 'POST',
@@ -22,18 +20,11 @@ function LoginForm() {
         })
             .then(res => res.json())
             .then(res => {
-                if (res.emailError) {
-                    emailError.innerHTML =
-                        "Utilisateur non trouvé !";
-                    passwordError.innerHTML = '';
-                }
-                else if (res.passwordError) {
-                    passwordError.innerHTML =
-                        "Mot de passe incorrect !";
-                    emailError.innerHTML = '';
+                if (res.error) {
+                    setError(res.error);
                 }
                 else {
-                    localStorage.setItem("token", JSON.stringify(res));
+                    localStorage.setItem("user", JSON.stringify(res));
                     alert("Vous êtes bien connecté");
                     navigate("/thread");
                 };
@@ -54,7 +45,7 @@ function LoginForm() {
                 onChange={(event) => setEmail(event.target.value)}
                 value={email}
             />
-            <p className="email-error"></p>
+            {(error.type === "email") && <p>{error.message}</p>}
             <input
                 type="password"
                 placeholder="Mot de passe"
@@ -64,10 +55,11 @@ function LoginForm() {
                 onChange={(event) => setPassword(event.target.value)}
                 value={password}
             />
-            <p className="password-error"></p>
+            {(error.type === "password") && <p>{error.message}</p>}
             <input className="button"
                 type="submit"
-                value="suivant" />
+                value="suivant"
+            />
         </form>
     );
 }

@@ -81,8 +81,28 @@ function Share() {
     const [text, setText] = useState('');
     const [file, setFile] = useState('');
 
-    function handleShare(event) {
+    async function handleShare(event) {
         event.preventDefault();
+
+        const userId = JSON.parse(localStorage.getItem("user")).userId;
+        console.log(userId);
+
+        await fetch('http://localhost:4000/api/post/', {
+            method: 'POST',
+            body: JSON.stringify({
+                "authorId": userId,
+                "textContent": text,
+                "imgContent": file
+            }),
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.log("Erreur: " + error);
+            });
     }
 
     return (
