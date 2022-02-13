@@ -61,6 +61,8 @@ exports.login = async (req, res, next) => {
                     }
                     res.status(200).json({
                         userId: user.id,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
                         token: jwt.sign(
                             { userId: user.id },
                             process.env.ACCESS_TOKEN_SECRET,

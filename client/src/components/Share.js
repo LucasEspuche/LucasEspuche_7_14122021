@@ -81,20 +81,21 @@ function Share() {
     const [text, setText] = useState('');
     const [file, setFile] = useState('');
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
     async function handleShare(event) {
         event.preventDefault();
-
-        const userId = JSON.parse(localStorage.getItem("user")).userId;
-        console.log(userId);
 
         await fetch('http://localhost:4000/api/post/', {
             method: 'POST',
             body: JSON.stringify({
-                "authorId": userId,
                 "textContent": text,
                 "imgContent": file
             }),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
         })
             .then(res => res.json())
             .then(res => {
@@ -108,14 +109,14 @@ function Share() {
     return (
         <ShareWrapper>
             <h1>Bienvenue</h1>
-            <form action="" onSubmit={handleShare} id="login-form">
+            <form action="" onSubmit={handleShare} id="share-form">
                 <div className="user">
                     <img className="user__avatar"
                         src={avatar}
                         alt="avatar"
                     />
                     <div className="user__status">
-                        <h3>Utilisateur</h3>
+                        <h3>{user.firstname} {user.lastname}</h3>
                         <p>En ligne</p>
                     </div>
                 </div>

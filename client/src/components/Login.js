@@ -25,7 +25,6 @@ function LoginForm() {
                 }
                 else {
                     localStorage.setItem("user", JSON.stringify(res));
-                    alert("Vous êtes bien connecté");
                     navigate("/thread");
                 };
             })

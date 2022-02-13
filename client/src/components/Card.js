@@ -1,8 +1,17 @@
 import { useState } from "react";
+import { formatDistance, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
 import avatar from "../assets/avatar.png"
 
 function Card({ post }) {
     const [comment, setComment] = useState('');
+    
+    const postDate = formatDistance(
+        parseISO(post.createdAt),
+        new Date(), {
+        addSuffix: true,
+        locale: fr
+    });
 
     function handleComment(event) {
         event.preventDefault();
@@ -16,8 +25,8 @@ function Card({ post }) {
                     alt="avatar contact"
                 />
                 <div className="contact__status">
-                    <h3>{post.authorId}</h3>
-                    <p>{post.createdAt}</p>
+                    <h3>{post.author.firstname} {post.author.lastname}</h3>
+                    <p>{postDate}</p>
                 </div>
             </div>
             <p>{post.textContent}</p>

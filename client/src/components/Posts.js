@@ -78,19 +78,20 @@ const PostsWrapper = styled.section`
 
 function Posts() {
     const [posts, setPosts] = useState([]);
-    const [availablePost, setAvailablePost] = useState(true);
 
     useEffect(() => {
+        const token = JSON.parse(localStorage.getItem("user")).token;
         const url = "http://localhost:4000/api/post/";
+
         const getAllPosts = async () => {
             try {
-                const response = await fetch(url);
+                const response = await fetch(url, {
+                    headers:
+                        { 'Authorization': `Bearer ${token}` }
+                });
                 const res = await response.json();
-                if (res.status === 200) {
+                if (response.status === 200) {
                     setPosts(res);
-                }
-                else {
-                    setAvailablePost(false);
                 }
             } catch (error) {
                 console.log("error", error);
@@ -103,7 +104,7 @@ function Posts() {
         <PostsWrapper>
             <h2>Derniers ajouts</h2>
             <ul>
-                {availablePost ? posts.map((post) => {
+                {posts.length > 0 ? posts.map((post) => {
                     return (
                         <Card post={post} key={post.id} />
                     )
