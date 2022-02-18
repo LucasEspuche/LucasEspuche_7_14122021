@@ -5,7 +5,9 @@ import avatar from "../assets/avatar.png"
 
 function Card({ post }) {
     const [comment, setComment] = useState('');
-    
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const postDate = formatDistance(
         parseISO(post.createdAt),
         new Date(), {
@@ -13,8 +15,24 @@ function Card({ post }) {
         locale: fr
     });
 
-    function handleComment(event) {
+    async function handleComment(event) {
         event.preventDefault();
+
+        await fetch('http://localhost:4000/api/comment/', {
+            method: 'POST',
+            body: JSON.stringify({
+                "postId": post.id,
+                "content": comment
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+            })
     }
 
     return (

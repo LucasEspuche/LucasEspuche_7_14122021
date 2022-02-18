@@ -79,31 +79,40 @@ const ShareWrapper = styled.section`
 
 function Share() {
     const [text, setText] = useState('');
-    const [file, setFile] = useState('');
+    const [image, setImage] = useState('');
 
     const user = JSON.parse(localStorage.getItem("user"));
 
     async function handleShare(event) {
         event.preventDefault();
+        
+        const data = new FormData()
+        data.append("file", image)
+        data.append("upload_preset", "user_posts")
 
-        await fetch('http://localhost:4000/api/post/', {
-            method: 'POST',
-            body: JSON.stringify({
-                "textContent": text,
-                "imgContent": file
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
-            },
+        await fetch("https://api.cloudinary.com/v1_1/desjoxkzn/image/upload", {
+            method: "POST",
+            body: data
         })
             .then(res => res.json())
-            .then(res => {
-                console.log(res);
+            .then(async data => {
+
+                await fetch('http://localhost:4000/api/post/', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        "textContent": text,
+                        "imgContent": data.url || ""
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    },
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res);
+                    })
             })
-            .catch(error => {
-                console.log("Erreur: " + error);
-            });
     }
 
     return (
@@ -138,8 +147,7 @@ function Share() {
                             aria-label="fichier"
                             name="fichier"
                             id="file"
-                            onChange={(event) => setFile(event.target.value)}
-                            value={file}
+                            onChange={(event) => setImage(event.target.files[0])}
                         />
                         <label
                             className="upload-button__label"
