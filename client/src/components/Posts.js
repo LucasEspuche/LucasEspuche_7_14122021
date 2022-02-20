@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styled from 'styled-components'
+import styled from 'styled-components';
 import Card from '../components/Card';
 
 const PostsWrapper = styled.section`
@@ -10,16 +10,15 @@ const PostsWrapper = styled.section`
         margin: 20px 0px;
     }
     ul {
-        li {
+        .card {
             background-color: white;
             padding: 15px 15px;
             border-radius: 20px;
             box-shadow: 0px 0px 7px 0px rgba(17, 17, 17, 0.555);
             margin-bottom: 25px;
-            .contact {
+            .author {
                 display: flex;
                 align-items: center;
-                margin-bottom: 10px;
                 &__avatar {
                     height: 37px;
                     width: 37px;
@@ -31,10 +30,10 @@ const PostsWrapper = styled.section`
                     font-weight: 300;
                 }
             }
-            p {
-                margin-bottom: 10px;
+            .text-content {
+                margin: 10px 0px;
             }
-            img {
+            .img-content {
                 height: 300px;
                 width: 100%;
                 object-fit: cover;
@@ -76,8 +75,9 @@ const PostsWrapper = styled.section`
     }
 `
 
-function Posts() {
+function Posts({ renderPost }) {
     const [posts, setPosts] = useState([]);
+    const [renderComment, setRenderComment] = useState(0);
 
     useEffect(() => {
         const token = JSON.parse(localStorage.getItem("user")).token;
@@ -98,7 +98,7 @@ function Posts() {
             }
         };
         getAllPosts();
-    }, []);
+    }, [renderPost, renderComment]);
 
     return (
         <PostsWrapper>
@@ -106,7 +106,9 @@ function Posts() {
             <ul>
                 {posts.length > 0 ? posts.map((post) => {
                     return (
-                        <Card post={post} key={post.id} />
+                        <Card post={post} key={post.id}
+                            renderComment={renderComment}
+                            setRenderComment={setRenderComment} />
                     )
                 }) : "Aucun post à afficher !"}
             </ul>

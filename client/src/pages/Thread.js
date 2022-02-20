@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components'
 import Share from "../components/Share";
 import Posts from "../components/Posts";
@@ -9,10 +10,13 @@ const ThreadWrapper = styled.main`
 `
 
 function Thread() {
+    const [renderPost, setRenderPost] = useState(0);
+
     return (
         <ThreadWrapper>
-            <Share />
-            <Posts />
+            <Share renderPost={renderPost}
+                setRenderPost={setRenderPost} />
+            <Posts renderPost={renderPost} />
         </ThreadWrapper>
     );
 }

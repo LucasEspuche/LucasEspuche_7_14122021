@@ -2,8 +2,9 @@ import { useState } from "react";
 import { formatDistance, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import avatar from "../assets/avatar.png"
+import Comment from '../components/Comment';
 
-function Card({ post }) {
+function Card({ post, renderComment, setRenderComment }) {
     const [comment, setComment] = useState('');
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -32,23 +33,38 @@ function Card({ post }) {
             .then(res => res.json())
             .then(res => {
                 console.log(res);
+                setRenderComment(renderComment + 1);
             })
+        setComment('');
     }
 
     return (
-        <li key={post.id}>
-            <div className="contact">
-                <img className="contact__avatar"
+        <li key={post.id}
+            className="card">
+            <div className="author">
+                <img className="author__avatar"
                     src={avatar}
-                    alt="avatar contact"
+                    alt="avatar auteur"
                 />
-                <div className="contact__status">
+                <div className="author__status">
                     <h3>{post.author.firstname} {post.author.lastname}</h3>
                     <p>{postDate}</p>
                 </div>
             </div>
-            <p>{post.textContent}</p>
-            <img src={post.imgContent} alt="illustration du post" />
+            <p className="text-content">{post.textContent}</p>
+            <img className="img-content"
+                src={post.imgContent}
+                alt="illustration du post"
+            />
+            <ul>
+                {(post.comments.length > 0)
+                    && post.comments.map((comment) => {
+                        return (
+                            <Comment comment={comment}
+                                key={comment.id} />
+                        )
+                    })}
+            </ul>
             <form action="" onSubmit={handleComment} id="comment-form">
                 <img src={avatar} alt="avatar" />
                 <input
@@ -65,6 +81,7 @@ function Card({ post }) {
                     className="submit-input"
                     type="submit"
                     value="publier"
+                    disabled={!comment}
                 />
             </form>
         </li>

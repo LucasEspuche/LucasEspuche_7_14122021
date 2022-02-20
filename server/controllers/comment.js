@@ -29,27 +29,3 @@ exports.createComment = async (req, res, next) => {
         }
     }
 };
-
-exports.getAllComments = async (req, res, next) => {
-    const postId = req.body.postId;
-
-    await prisma.comment.findMany({
-        where: {
-            postId: {
-                is: {
-                    postId: postId
-                }
-            }
-        },
-        include: {
-            author: {
-                select: {
-                    firstname: true,
-                    lastname: true
-                }
-            }
-        }
-    })
-        .then(comments => res.status(200).json(comments))
-        .catch(error => res.status(400).json({ error }));
-};

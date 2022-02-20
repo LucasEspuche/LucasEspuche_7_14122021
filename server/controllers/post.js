@@ -31,12 +31,27 @@ exports.createPost = async (req, res, next) => {
 };
 
 exports.getAllPosts = async (req, res, next) => {
+    const postId = req.body.postId;
+
     await prisma.post.findMany({
         include: {
             author: {
                 select: {
                     firstname: true,
                     lastname: true
+                }
+            },
+            comments: {
+                where: {
+                    postId: postId
+                },
+                include: {
+                    author: {
+                        select: {
+                            firstname: true,
+                            lastname: true
+                        }
+                    }
                 }
             }
         }

@@ -41,6 +41,13 @@ const ShareWrapper = styled.section`
             border-radius: 20px;
             margin-bottom: 10px;
         }
+        .image-preview {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
         .buttons {
             display: flex;
             justify-content: space-between;
@@ -77,15 +84,22 @@ const ShareWrapper = styled.section`
     }
 `
 
-function Share() {
+function Share({ renderPost, setRenderPost }) {
     const [text, setText] = useState('');
     const [image, setImage] = useState('');
+    const [imagePreview, setImagePreview] = useState('');
 
     const user = JSON.parse(localStorage.getItem("user"));
 
+    function loadPreview(file) {
+        if (file) {
+            setImagePreview(URL.createObjectURL(file))
+        }
+    }
+
     async function handleShare(event) {
         event.preventDefault();
-        
+
         const data = new FormData()
         data.append("file", image)
         data.append("upload_preset", "user_posts")
@@ -101,7 +115,7 @@ function Share() {
                     method: 'POST',
                     body: JSON.stringify({
                         "textContent": text,
-                        "imgContent": data.url || ""
+                        "imgContent": data.url || null
                     }),
                     headers: {
                         'Content-Type': 'application/json',
@@ -111,8 +125,12 @@ function Share() {
                     .then(res => res.json())
                     .then(res => {
                         console.log(res);
+                        setRenderPost(renderPost + 1);
                     })
             })
+        setText('');
+        setImage('');
+        setImagePreview('');
     }
 
     return (
@@ -139,6 +157,11 @@ function Share() {
                     onChange={(event) => setText(event.target.value)}
                     value={text}
                 />
+                {(imagePreview)
+                    && <img className="image-preview"
+                        src={imagePreview}
+                        alt="preview"
+                    />}
                 <div className="buttons">
                     <div className="upload-button">
                         <input
@@ -147,19 +170,27 @@ function Share() {
                             aria-label="fichier"
                             name="fichier"
                             id="file"
-                            onChange={(event) => setImage(event.target.files[0])}
+                            onChange={(event) => {
+                                setImage(event.target.files[0])
+                                loadPreview(event.target.files[0])
+                            }}
                         />
                         <label
                             className="upload-button__label"
                             htmlFor="file">
                             <span>Choisir un fichier</span>
-                            <img src={upload} alt="upload file" />
+                            <img
+                                src={upload}
+                                alt="upload file"
+                            />
                         </label>
                     </div>
                     <input
                         className="submit-button"
                         type="submit"
-                        value="publier" />
+                        value="publier"
+                        disabled={!text || !image}
+                    />
                 </div>
             </form>
         </ShareWrapper>
