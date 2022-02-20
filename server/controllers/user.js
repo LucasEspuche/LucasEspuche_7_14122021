@@ -63,6 +63,7 @@ exports.login = async (req, res, next) => {
                         userId: user.id,
                         firstname: user.firstname,
                         lastname: user.lastname,
+                        userImg: user.userImg,
                         token: jwt.sign(
                             { userId: user.id },
                             process.env.ACCESS_TOKEN_SECRET,

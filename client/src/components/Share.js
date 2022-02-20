@@ -139,7 +139,8 @@ function Share({ renderPost, setRenderPost }) {
             <form action="" onSubmit={handleShare} id="share-form">
                 <div className="user">
                     <img className="user__avatar"
-                        src={avatar}
+                        src={user.userImg ?
+                            user.userImg : avatar}
                         alt="avatar"
                     />
                     <div className="user__status">

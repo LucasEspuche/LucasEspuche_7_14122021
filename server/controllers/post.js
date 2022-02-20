@@ -38,7 +38,8 @@ exports.getAllPosts = async (req, res, next) => {
             author: {
                 select: {
                     firstname: true,
-                    lastname: true
+                    lastname: true,
+                    userImg: true
                 }
             },
             comments: {
@@ -49,7 +50,8 @@ exports.getAllPosts = async (req, res, next) => {
                     author: {
                         select: {
                             firstname: true,
-                            lastname: true
+                            lastname: true,
+                            userImg: true
                         }
                     }
                 }

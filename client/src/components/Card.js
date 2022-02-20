@@ -43,7 +43,8 @@ function Card({ post, renderComment, setRenderComment }) {
             className="card">
             <div className="author">
                 <img className="author__avatar"
-                    src={avatar}
+                    src={post.author.userImg ?
+                        post.author.userImg : avatar}
                     alt="avatar auteur"
                 />
                 <div className="author__status">
@@ -66,7 +67,11 @@ function Card({ post, renderComment, setRenderComment }) {
                     })}
             </ul>
             <form action="" onSubmit={handleComment} id="comment-form">
-                <img src={avatar} alt="avatar" />
+                <img
+                    src={user.userImg ?
+                        user.userImg : avatar}
+                    alt="avatar"
+                />
                 <input
                     className="comment-input"
                     type="text"

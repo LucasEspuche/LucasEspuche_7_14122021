@@ -36,7 +36,8 @@ function Comment({ comment }) {
         <CommentWrapper key={comment.id}>
             <div className="author">
                 <img className="author__avatar"
-                    src={avatar}
+                    src={comment.author.userImg ?
+                        comment.author.userImg : avatar}
                     alt="avatar auteur"
                 />
                 <div className="author__status">
