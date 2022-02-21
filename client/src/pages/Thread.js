@@ -16,7 +16,8 @@ function Thread() {
         <ThreadWrapper>
             <Share renderPost={renderPost}
                 setRenderPost={setRenderPost} />
-            <Posts renderPost={renderPost} />
+            <Posts renderPost={renderPost}
+                setRenderPost={setRenderPost} />
         </ThreadWrapper>
     );
 }

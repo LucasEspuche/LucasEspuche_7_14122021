@@ -2,9 +2,10 @@ import { useState } from "react";
 import { formatDistance, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import avatar from "../assets/avatar.png"
+import trash from "../assets/trash.svg";
 import Comment from '../components/Comment';
 
-function Card({ post, renderComment, setRenderComment }) {
+function Card({ post, renderPost, setRenderPost }) {
     const [comment, setComment] = useState('');
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -33,9 +34,27 @@ function Card({ post, renderComment, setRenderComment }) {
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                setRenderComment(renderComment + 1);
+                setRenderPost(renderPost + 1);
             })
         setComment('');
+    }
+
+    async function deletePost() {
+        await fetch(`http://localhost:4000/api/post/${post.id}`, {
+            method: 'DELETE',
+            body: JSON.stringify({
+                "id": post.id
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                setRenderPost(renderPost - 1);
+            })
     }
 
     return (
@@ -51,6 +70,12 @@ function Card({ post, renderComment, setRenderComment }) {
                     <h3>{post.author.firstname} {post.author.lastname}</h3>
                     <p>{postDate}</p>
                 </div>
+                {(user.userId === post.authorId)
+                    && <img className="post-delete"
+                        src={trash}
+                        alt="supprimer post"
+                        onClick={deletePost}
+                    />}
             </div>
             <p className="text-content">{post.textContent}</p>
             <img className="img-content"
@@ -62,7 +87,9 @@ function Card({ post, renderComment, setRenderComment }) {
                     && post.comments.map((comment) => {
                         return (
                             <Comment comment={comment}
-                                key={comment.id} />
+                                key={comment.id}
+                                renderPost={renderPost}
+                                setRenderPost={setRenderPost} />
                         )
                     })}
             </ul>

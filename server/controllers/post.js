@@ -34,6 +34,9 @@ exports.getAllPosts = async (req, res, next) => {
     const postId = req.body.postId;
 
     await prisma.post.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        },
         include: {
             author: {
                 select: {
@@ -60,4 +63,25 @@ exports.getAllPosts = async (req, res, next) => {
     })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ error }));
+};
+
+exports.deletePost = async (req, res, next) => {
+    const postId = parseInt(req.params.id);
+
+    await prisma.post.delete({
+        where: {
+            id: postId
+        },
+        include: {
+            comments: {
+                where: {
+                    postId: postId
+                }
+            }
+        }
+    })
+        .then(res.status(200).json({
+            message: 'Le post à été supprimé !'
+        }))
+        .catch(error => res.status(500).json({ error }));
 };

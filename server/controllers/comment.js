@@ -29,3 +29,17 @@ exports.createComment = async (req, res, next) => {
         }
     }
 };
+
+exports.deleteComment = async (req, res, next) => {
+    const commentId = parseInt(req.params.id);
+
+    await prisma.comment.delete({
+        where: {
+            id: commentId
+        }
+    })
+        .then(res.status(200).json({
+            message: 'Le commentaire à été supprimé !'
+        }))
+        .catch(error => res.status(500).json({ error }));
+};

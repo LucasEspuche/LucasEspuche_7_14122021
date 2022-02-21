@@ -29,6 +29,11 @@ const PostsWrapper = styled.section`
                     padding: 0px 10px;
                     font-weight: 300;
                 }
+                .post-delete {
+                    height: 25px;
+                    width: 25px;
+                    cursor: pointer;
+                }
             }
             .text-content {
                 margin: 10px 0px;
@@ -75,9 +80,8 @@ const PostsWrapper = styled.section`
     }
 `
 
-function Posts({ renderPost }) {
+function Posts({ renderPost, setRenderPost }) {
     const [posts, setPosts] = useState([]);
-    const [renderComment, setRenderComment] = useState(0);
 
     useEffect(() => {
         const token = JSON.parse(localStorage.getItem("user")).token;
@@ -98,7 +102,7 @@ function Posts({ renderPost }) {
             }
         };
         getAllPosts();
-    }, [renderPost, renderComment]);
+    }, [renderPost]);
 
     return (
         <PostsWrapper>
@@ -107,8 +111,8 @@ function Posts({ renderPost }) {
                 {posts.length > 0 ? posts.map((post) => {
                     return (
                         <Card post={post} key={post.id}
-                            renderComment={renderComment}
-                            setRenderComment={setRenderComment} />
+                            renderPost={renderPost}
+                            setRenderPost={setRenderPost} />
                     )
                 }) : "Aucun post à afficher !"}
             </ul>
