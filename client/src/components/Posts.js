@@ -16,18 +16,22 @@ const PostsWrapper = styled.section`
             border-radius: 20px;
             box-shadow: 0px 0px 7px 0px rgba(17, 17, 17, 0.555);
             margin-bottom: 25px;
-            .author {
+            &__details {
                 display: flex;
                 align-items: center;
-                &__avatar {
-                    height: 37px;
-                    width: 37px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                }
-                &__status {
-                    padding: 0px 10px;
-                    font-weight: 300;
+                justify-content: space-between;
+                .author {
+                    display: flex;
+                    &__avatar {
+                        height: 37px;
+                        width: 37px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+                    &__status {
+                        padding: 0px 10px;
+                        font-weight: 300;
+                    }
                 }
                 .post-delete {
                     height: 25px;

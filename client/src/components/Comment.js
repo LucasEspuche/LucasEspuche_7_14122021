@@ -5,8 +5,17 @@ import avatar from "../assets/avatar.png";
 import trash from "../assets/trash.svg";
 
 const CommentWrapper = styled.li`
-    .author {
+    .contact {
+        display: flex;
+        &__avatar {
+            height: 37px;
+            width: 37px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
         &__status {
+            padding: 0px 10px;
+            font-weight: 300;
             display: flex;
             align-items: center;
             h3 {
@@ -17,7 +26,7 @@ const CommentWrapper = styled.li`
     .comment {
         display: flex;
         &__text {
-            min-width: 67%;
+            width: 80%;
             background-color: #F6F6F6;
             padding: 8px 15px;
             margin: 0px 0px 25px 45px; 
@@ -62,13 +71,13 @@ function Comment({ comment, renderPost, setRenderPost }) {
 
     return (
         <CommentWrapper key={comment.id}>
-            <div className="author">
-                <img className="author__avatar"
+            <div className="contact">
+                <img className="contact__avatar"
                     src={comment.author.userImg ?
                         comment.author.userImg : avatar}
                     alt="avatar auteur"
                 />
-                <div className="author__status">
+                <div className="contact__status">
                     <h3>{comment.author.firstname} {comment.author.lastname}</h3>
                     <p>{commentDate}</p>
                 </div>

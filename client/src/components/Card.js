@@ -60,15 +60,17 @@ function Card({ post, renderPost, setRenderPost }) {
     return (
         <li key={post.id}
             className="card">
-            <div className="author">
-                <img className="author__avatar"
-                    src={post.author.userImg ?
-                        post.author.userImg : avatar}
-                    alt="avatar auteur"
-                />
-                <div className="author__status">
-                    <h3>{post.author.firstname} {post.author.lastname}</h3>
-                    <p>{postDate}</p>
+            <div className="card__details">
+                <div className="author">
+                    <img className="author__avatar"
+                        src={post.author.userImg ?
+                            post.author.userImg : avatar}
+                        alt="avatar auteur"
+                    />
+                    <div className="author__status">
+                        <h3>{post.author.firstname} {post.author.lastname}</h3>
+                        <p>{postDate}</p>
+                    </div>
                 </div>
                 {(user.userId === post.authorId)
                     && <img className="post-delete"
