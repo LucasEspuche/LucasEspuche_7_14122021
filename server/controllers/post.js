@@ -75,32 +75,26 @@ exports.getAllPosts = async (req, res, next) => {
 exports.deletePost = async (req, res, next) => {
     const postId = parseInt(req.params.id);
 
-    try {
-        const post = await prisma.post.findUnique({
-            where: {
-                id: postId
-            }
+    const post = await prisma.post.findUnique({
+        where: {
+            id: postId
+        }
+    });
+
+    const image = post.imgContent.split("/").pop().split(".")[0];
+
+    cloudinary.uploader.destroy(`posts/${image}`,
+        { resource_type: "image" },
+        async function (error, result) {
+            await prisma.post.delete({
+                where: {
+                    id: postId
+                }
+            })
+                .then(res.status(200).json({
+                    message: 'Le post à été supprimé !'
+                }))
+                .catch(error => res.status(500).json({ error }));
+            console.log(result, error)
         });
-        res.status(201).json(post)
-
-        const image = post.imgContent.split("/").pop().split(".")[0];
-        console.log(image);
-
-        cloudinary.v2.uploader.destroy(image,
-            { resource_type: "image" },
-            function (error, result) { console.log(result, error) });
-    }
-    catch (error) {
-        res.status(400).json({ error })
-    }
-
-    // await prisma.post.delete({
-    //     where: {
-    //         id: postId
-    //     }
-    // })
-    //     .then(res.status(200).json({
-    //         message: 'Le post à été supprimé !'
-    //     }))
-    //     .catch(error => res.status(500).json({ error }));
 };
