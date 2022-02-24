@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from 'styled-components'
 import camera from "../assets/camera.svg"
 import trash from "../assets/trash.svg"
@@ -16,6 +16,7 @@ const ProfileWrapper = styled.main`
         margin: auto;
         height: 150px;
         width: 150px;
+        object-fit: cover;
         border-radius: 50%;
         margin-bottom: -75px;
     }
@@ -90,10 +91,38 @@ const ProfileWrapper = styled.main`
 
 function Profile() {
     const [photo, setPhoto] = useState('');
+    const [photoPreview, setPhotoPreview] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [profile, setProfile] = useState({});
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const url = `http://localhost:4000/api/profile/${user.userId}`;
+
+        const getUser = async () => {
+            try {
+                const response = await fetch(url, {
+                    headers:
+                        { 'Authorization': `Bearer ${user.token}` }
+                });
+                const res = await response.json();
+                setProfile(res);
+                console.table(res);
+            } catch (error) {
+                console.log("error", error);
+            }
+        };
+        getUser();
+    }, []);
+
+    function loadPreview(file) {
+        if (file) {
+            setPhotoPreview(URL.createObjectURL(file))
+        }
+    }
 
     function handleChanges(event) {
         event.preventDefault();
@@ -103,7 +132,8 @@ function Profile() {
         <ProfileWrapper>
             <h1>Profil</h1>
             <img className="avatar-display"
-                src={avatar}
+                src={photoPreview ?
+                    photoPreview : profile.userImg || avatar}
                 alt="avatar"
             />
             <form action="" onSubmit={handleChanges} id="profile-form">
@@ -114,8 +144,10 @@ function Profile() {
                         aria-label="avatar"
                         name="avatar"
                         id="avatar"
-                        onChange={(event) => setPhoto(event.target.value)}
-                        value={photo}
+                        onChange={(event) => {
+                            setPhoto(event.target.files[0])
+                            loadPreview(event.target.files[0])
+                        }}
                     />
                     <label
                         className="avatar__label"
