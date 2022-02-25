@@ -38,7 +38,7 @@ exports.deleteComment = async (req, res, next) => {
             id: commentId
         }
     })
-        .then(res.status(200).json({
+        .then((res) => res.status(200).json({
             message: 'Le commentaire à été supprimé !'
         }))
         .catch(error => res.status(500).json({ error }));

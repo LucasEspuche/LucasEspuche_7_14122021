@@ -89,7 +89,7 @@ const ProfileWrapper = styled.main`
     }
 `
 
-function Profile() {
+function Profile({ user }) {
     const [photo, setPhoto] = useState('');
     const [photoPreview, setPhotoPreview] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -98,14 +98,13 @@ function Profile() {
     const [password, setPassword] = useState('');
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const url = `http://localhost:4000/api/profile/${user.userId}`;
-
-        const getUser = async () => {
+        const getProfile = async () => {
             try {
-                const response = await fetch(url, {
-                    headers:
-                        { 'Authorization': `Bearer ${user.token}` }
+                const response = await fetch(
+                    `http://localhost:4000/api/profile/${user?.userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${user?.token}`
+                    }
                 });
                 const res = await response.json();
                 setPhoto(res.userImg);
@@ -117,8 +116,8 @@ function Profile() {
                 console.log("error", error);
             }
         };
-        getUser();
-    }, []);
+        getProfile();
+    }, [user]);
 
     function loadPreview(file) {
         if (file) {

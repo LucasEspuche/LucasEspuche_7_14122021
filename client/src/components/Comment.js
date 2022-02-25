@@ -43,9 +43,7 @@ const CommentWrapper = styled.li`
     }
 `
 
-function Comment({ comment, renderPost, setRenderPost }) {
-    const user = JSON.parse(localStorage.getItem("user"));
-
+function Comment({ user, comment, renderPost, setRenderPost }) {
     const commentDate = formatDistance(
         parseISO(comment.createdAt),
         new Date(), {
@@ -61,13 +59,13 @@ function Comment({ comment, renderPost, setRenderPost }) {
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${user?.token}`
             },
         })
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                setRenderPost(renderPost - 1);
+                setRenderPost(renderPost + 1);
             })
     }
 
@@ -86,7 +84,7 @@ function Comment({ comment, renderPost, setRenderPost }) {
             </div>
             <div className='comment'>
                 <p className="comment__text">{comment.content}</p>
-                {(user.userId === comment.authorId)
+                {(user?.userId === comment.authorId)
                     && <img className="comment__delete"
                         src={remove}
                         alt="supprimer commentaire"

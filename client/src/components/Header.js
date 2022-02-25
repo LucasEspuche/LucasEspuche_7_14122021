@@ -21,7 +21,10 @@ const HeaderWrapper = styled.header`
 `
 
 function Header() {
-    const userImg = JSON.parse(localStorage.getItem("user")).userImg;
+    let userImg = null;
+    if (localStorage.getItem("user")) {
+        userImg = JSON.parse(localStorage.getItem("user")).userImg;
+    }
 
     return (
         <HeaderWrapper>

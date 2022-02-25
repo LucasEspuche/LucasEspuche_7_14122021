@@ -84,18 +84,17 @@ const PostsWrapper = styled.section`
     }
 `
 
-function Posts({ renderPost, setRenderPost }) {
+function Posts({ user, renderPost, setRenderPost }) {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        const token = JSON.parse(localStorage.getItem("user")).token;
-        const url = "http://localhost:4000/api/post/";
-
         const getAllPosts = async () => {
             try {
-                const response = await fetch(url, {
-                    headers:
-                        { 'Authorization': `Bearer ${token}` }
+                const response = await fetch(
+                    'http://localhost:4000/api/post/', {
+                    headers: {
+                        'Authorization': `Bearer ${user?.token}`
+                    }
                 });
                 const res = await response.json();
                 if (response.status === 200) {
@@ -106,19 +105,23 @@ function Posts({ renderPost, setRenderPost }) {
             }
         };
         getAllPosts();
-    }, [renderPost]);
+    }, [user, renderPost]);
 
     return (
         <PostsWrapper>
             <h2>Derniers ajouts</h2>
             <ul>
-                {posts.length > 0 ? posts.map((post) => {
-                    return (
-                        <Card post={post} key={post.id}
-                            renderPost={renderPost}
-                            setRenderPost={setRenderPost} />
-                    )
-                }) : "Aucun post à afficher !"}
+                {posts.length > 0 ?
+                    posts.map((post) => {
+                        return (
+                            <Card user={user}
+                                post={post}
+                                key={post.id}
+                                renderPost={renderPost}
+                                setRenderPost={setRenderPost}
+                            />
+                        )
+                    }) : "Aucun post à afficher !"}
             </ul>
         </PostsWrapper>
     );

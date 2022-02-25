@@ -84,12 +84,10 @@ const ShareWrapper = styled.section`
     }
 `
 
-function Share({ renderPost, setRenderPost }) {
+function Share({ user, renderPost, setRenderPost }) {
     const [text, setText] = useState('');
     const [image, setImage] = useState('');
     const [imagePreview, setImagePreview] = useState('');
-
-    const user = JSON.parse(localStorage.getItem("user"));
 
     function loadPreview(file) {
         if (file) {
@@ -119,7 +117,7 @@ function Share({ renderPost, setRenderPost }) {
                     }),
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${user.token}`
+                        'Authorization': `Bearer ${user?.token}`
                     },
                 })
                     .then(res => res.json())
@@ -139,12 +137,12 @@ function Share({ renderPost, setRenderPost }) {
             <form action="" onSubmit={handleShare} id="share-form">
                 <div className="user">
                     <img className="user__avatar"
-                        src={user.userImg ?
-                            user.userImg : avatar}
+                        src={user?.userImg ?
+                            user?.userImg : avatar}
                         alt="avatar"
                     />
                     <div className="user__status">
-                        <h3>{user.firstname} {user.lastname}</h3>
+                        <h3>{user?.firstname} {user?.lastname}</h3>
                         <p>En ligne</p>
                     </div>
                 </div>

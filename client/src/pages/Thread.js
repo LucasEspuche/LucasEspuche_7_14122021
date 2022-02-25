@@ -9,15 +9,19 @@ const ThreadWrapper = styled.main`
     margin: auto;
 `
 
-function Thread() {
+function Thread({ user }) {
     const [renderPost, setRenderPost] = useState(0);
 
     return (
         <ThreadWrapper>
-            <Share renderPost={renderPost}
-                setRenderPost={setRenderPost} />
-            <Posts renderPost={renderPost}
-                setRenderPost={setRenderPost} />
+            <Share user={user}
+                renderPost={renderPost}
+                setRenderPost={setRenderPost}
+            />
+            <Posts user={user}
+                renderPost={renderPost}
+                setRenderPost={setRenderPost}
+            />
         </ThreadWrapper>
     );
 }

@@ -5,10 +5,8 @@ import avatar from "../assets/avatar.png"
 import trash from "../assets/trash.svg";
 import Comment from '../components/Comment';
 
-function Card({ post, renderPost, setRenderPost }) {
+function Card({ user, post, renderPost, setRenderPost }) {
     const [comment, setComment] = useState('');
-
-    const user = JSON.parse(localStorage.getItem("user"));
 
     const postDate = formatDistance(
         parseISO(post.createdAt),
@@ -28,7 +26,7 @@ function Card({ post, renderPost, setRenderPost }) {
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${user?.token}`
             },
         })
             .then(res => res.json())
@@ -47,13 +45,13 @@ function Card({ post, renderPost, setRenderPost }) {
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${user?.token}`
             },
         })
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                setRenderPost(renderPost - 1);
+                setRenderPost(renderPost + 1);
             })
     }
 
@@ -72,7 +70,7 @@ function Card({ post, renderPost, setRenderPost }) {
                         <p>{postDate}</p>
                     </div>
                 </div>
-                {(user.userId === post.authorId)
+                {(user?.userId === post.authorId)
                     && <img className="post-delete"
                         src={trash}
                         alt="supprimer post"
@@ -88,17 +86,19 @@ function Card({ post, renderPost, setRenderPost }) {
                 {(post.comments.length > 0)
                     && post.comments.map((comment) => {
                         return (
-                            <Comment comment={comment}
+                            <Comment user={user}
+                                comment={comment}
                                 key={comment.id}
                                 renderPost={renderPost}
-                                setRenderPost={setRenderPost} />
+                                setRenderPost={setRenderPost}
+                            />
                         )
                     })}
             </ul>
             <form action="" onSubmit={handleComment} id="comment-form">
                 <img
-                    src={user.userImg ?
-                        user.userImg : avatar}
+                    src={user?.userImg ?
+                        user?.userImg : avatar}
                     alt="avatar"
                 />
                 <input
