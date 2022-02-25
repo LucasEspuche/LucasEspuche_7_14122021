@@ -96,7 +96,6 @@ function Profile() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [profile, setProfile] = useState({});
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -109,8 +108,11 @@ function Profile() {
                         { 'Authorization': `Bearer ${user.token}` }
                 });
                 const res = await response.json();
-                setProfile(res);
-                console.table(res);
+                setPhoto(res.userImg);
+                setFirstName(res.firstname);
+                setLastName(res.lastname);
+                setEmail(res.email);
+                setPassword(res.password);
             } catch (error) {
                 console.log("error", error);
             }
@@ -133,7 +135,7 @@ function Profile() {
             <h1>Profil</h1>
             <img className="avatar-display"
                 src={photoPreview ?
-                    photoPreview : profile.userImg || avatar}
+                    photoPreview : photo || avatar}
                 alt="avatar"
             />
             <form action="" onSubmit={handleChanges} id="profile-form">

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { formatDistance, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import avatar from "../assets/avatar.png";
-import trash from "../assets/trash.svg";
+import remove from "../assets/remove.svg";
 
 const CommentWrapper = styled.li`
     .contact {
@@ -25,17 +25,19 @@ const CommentWrapper = styled.li`
     }
     .comment {
         display: flex;
+        align-items: center;
+        margin: 0px 0px 25px 45px; 
         &__text {
-            width: 80%;
+            width: 75%;
             background-color: #F6F6F6;
             padding: 8px 15px;
-            margin: 0px 0px 25px 45px; 
             border: solid 1px #C0C0C0;
             border-radius: 20px;
         }
         &__delete {
-            height: 20px;
-            width: 20px;
+            height: 25px;
+            width: 25px;
+            margin-left: 7px;
             cursor: pointer;     
         }
     }
@@ -86,7 +88,7 @@ function Comment({ comment, renderPost, setRenderPost }) {
                 <p className="comment__text">{comment.content}</p>
                 {(user.userId === comment.authorId)
                     && <img className="comment__delete"
-                        src={trash}
+                        src={remove}
                         alt="supprimer commentaire"
                         onClick={deleteComment}
                     />}
