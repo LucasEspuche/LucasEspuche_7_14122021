@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from 'styled-components'
 import camera from "../assets/camera.svg"
+import logout from "../assets/logout.svg"
 import trash from "../assets/trash.svg"
 import avatar from "../assets/avatar.png"
 
@@ -35,6 +36,10 @@ const ProfileWrapper = styled.main`
             border: solid 2px #C0C0C0;
             padding: 0px 10px;
             margin-bottom: 20px;
+        }
+        .email-input {
+            background-color: #EBEBEB;
+            cursor: default;
         }
         .avatar {
             margin-top: 50px;
@@ -71,7 +76,7 @@ const ProfileWrapper = styled.main`
             margin-bottom: 20px;
             cursor: pointer;
         }
-        .delete-button {
+        .logout-button {
             all: unset;
             display: flex;
             align-items: center;
@@ -87,15 +92,30 @@ const ProfileWrapper = styled.main`
             }
         }
     }
+    .delete-button {
+            all: unset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 40px;
+            margin: auto;
+            cursor: pointer;
+            span {
+                font-size: 20px;
+            }
+            img {
+                width: 25px;
+                margin-left: 7px;
+            }
+        }
 `
 
 function Profile({ user }) {
-    const [photo, setPhoto] = useState('');
     const [photoPreview, setPhotoPreview] = useState('');
+    const [photo, setPhoto] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
     useEffect(() => {
         const getProfile = async () => {
@@ -111,12 +131,13 @@ function Profile({ user }) {
                 setFirstName(res.firstname);
                 setLastName(res.lastname);
                 setEmail(res.email);
-                setPassword(res.password);
             } catch (error) {
                 console.log("error", error);
             }
         };
-        getProfile();
+        if (user) {
+            getProfile();
+        }
     }, [user]);
 
     function loadPreview(file) {
@@ -125,8 +146,38 @@ function Profile({ user }) {
         }
     }
 
-    function handleChanges(event) {
+    async function handleChanges(event) {
         event.preventDefault();
+
+        const data = new FormData()
+        data.append("file", photo)
+        data.append("upload_preset", "user_avatars")
+
+        await fetch("https://api.cloudinary.com/v1_1/desjoxkzn/image/upload", {
+            method: "POST",
+            body: data
+        })
+            .then(res => res.json())
+            .then(async data => {
+
+                await fetch(`http://localhost:4000/api/profile/${user?.userId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        "userImg": data.url || null,
+                        "firstname": firstName,
+                        "lastname": lastName
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user?.token}`
+                    },
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res);
+                    })
+            })
+        setPhotoPreview('');
     }
 
     return (
@@ -176,6 +227,7 @@ function Profile({ user }) {
                     value={lastName}
                 />
                 <input
+                    className="email-input"
                     type="text"
                     placeholder="Email"
                     aria-label="email"
@@ -183,26 +235,22 @@ function Profile({ user }) {
                     id="email"
                     onChange={(event) => setEmail(event.target.value)}
                     value={email}
-                />
-                <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    aria-label="password"
-                    name="password"
-                    id="password"
-                    onChange={(event) => setPassword(event.target.value)}
-                    value={password}
+                    readOnly
                 />
                 <input
                     className="submit-button"
                     type="submit"
                     value="enregistrer"
                 />
-                <button className="delete-button">
-                    <span>Supprimer le profil</span>
-                    <img src={trash} alt="delete profile" />
+                <button className="logout-button">
+                    <span>Me déconnecter</span>
+                    <img src={logout} alt="logout profile" />
                 </button>
             </form>
+            <button className="delete-button">
+                <span>Supprimer le compte</span>
+                <img src={trash} alt="delete profile" />
+            </button>
         </ProfileWrapper>
     );
 }

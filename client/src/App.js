@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
-import background from './assets/background.jpg'
 import Header from "./components/Header";
 import Home from './pages/Home';
 import Thread from './pages/Thread';
@@ -22,7 +21,6 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
     }
     body {
-        /* background-image: url(${background}); */
         background-color: #F6F6F6;
         background-position: center;
         background-repeat: no-repeat;

@@ -71,11 +71,12 @@ function Card({ user, post, renderPost, setRenderPost }) {
                     </div>
                 </div>
                 {(user?.userId === post.authorId)
-                    && <img className="post-delete"
-                        src={trash}
-                        alt="supprimer post"
-                        onClick={deletePost}
-                    />}
+                    && <button className="post-delete">
+                        <img src={trash}
+                            alt="supprimer post"
+                            onClick={deletePost}
+                        />
+                    </button>}
             </div>
             <p className="text-content">{post.textContent}</p>
             <img className="img-content"
@@ -96,11 +97,11 @@ function Card({ user, post, renderPost, setRenderPost }) {
                     })}
             </ul>
             <form action="" onSubmit={handleComment} id="comment-form">
-                <img
-                    src={user?.userImg ?
+                <div>
+                    <img src={user?.userImg ?
                         user?.userImg : avatar}
-                    alt="avatar"
-                />
+                        alt="avatar" />
+                </div>
                 <input
                     className="comment-input"
                     type="text"

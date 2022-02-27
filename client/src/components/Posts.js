@@ -34,9 +34,12 @@ const PostsWrapper = styled.section`
                     }
                 }
                 .post-delete {
-                    height: 25px;
-                    width: 25px;
+                    all: unset;
                     cursor: pointer;
+                    img {
+                        height: 25px;
+                        width: 25px;
+                    }
                 }
             }
             .text-content {
@@ -56,7 +59,6 @@ const PostsWrapper = styled.section`
                     width: 37px;
                     border-radius: 50%;
                     object-fit: cover;
-                    margin-bottom: inherit;
                 }
                 input {
                     all: unset;
@@ -104,7 +106,9 @@ function Posts({ user, renderPost, setRenderPost }) {
                 console.log("error", error);
             }
         };
-        getAllPosts();
+        if (user) {
+            getAllPosts();
+        }
     }, [user, renderPost]);
 
     return (

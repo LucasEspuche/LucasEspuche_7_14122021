@@ -58,12 +58,17 @@ exports.deleteProfile = async (req, res, next) => {
 
 exports.updateProfile = async (req, res, next) => {
     const userId = req.auth.userId;
+    const { userImg, firstname, lastname } = req.body;
 
     await prisma.user.update({
         where: {
             id: userId
         },
-        data: profileData
+        data: {
+            userImg,
+            firstname,
+            lastname
+        }
     })
         .then(() => res.status(200).json({
             message: 'Profil modifié !'

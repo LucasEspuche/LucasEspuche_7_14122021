@@ -15,6 +15,8 @@ const HeaderWrapper = styled.header`
         }
         .profile {
             height: 37px;
+            width: 37px;
+            object-fit: cover;
             border-radius: 50%;
         }
     }

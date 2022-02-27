@@ -35,10 +35,13 @@ const CommentWrapper = styled.li`
             border-radius: 20px;
         }
         &__delete {
-            height: 25px;
-            width: 25px;
-            margin-left: 7px;
-            cursor: pointer;     
+            all: unset;
+            cursor: pointer;
+            img {
+                height: 25px;
+                width: 25px;
+                margin-left: 7px;
+            }
         }
     }
 `
@@ -85,11 +88,12 @@ function Comment({ user, comment, renderPost, setRenderPost }) {
             <div className='comment'>
                 <p className="comment__text">{comment.content}</p>
                 {(user?.userId === comment.authorId)
-                    && <img className="comment__delete"
-                        src={remove}
-                        alt="supprimer commentaire"
-                        onClick={deleteComment}
-                    />}
+                    && <button className="comment__delete">
+                        <img src={remove}
+                            alt="supprimer commentaire"
+                            onClick={deleteComment}
+                        />
+                    </button>}
             </div>
         </CommentWrapper>
     )
