@@ -32,7 +32,7 @@ exports.getProfile = async (req, res, next) => {
 exports.deleteProfile = async (req, res, next) => {
     const userId = req.auth.userId;
 
-    const user = await prisma.post.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: userId
         }
@@ -48,7 +48,7 @@ exports.deleteProfile = async (req, res, next) => {
                     id: userId
                 }
             })
-                .then(() => res.status(200).json({
+                .then(res.status(200).json({
                     message: 'Profil supprimé !'
                 }))
                 .catch(error => res.status(500).json({ error }))
@@ -70,8 +70,11 @@ exports.updateProfile = async (req, res, next) => {
             lastname
         }
     })
-        .then(() => res.status(200).json({
-            message: 'Profil modifié !'
+        .then((user) => res.status(200).json({
+            userId: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            userImg: user.userImg
         }))
         .catch(error => res.status(500).json({ error }))
 };

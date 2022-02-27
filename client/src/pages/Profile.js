@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components'
 import camera from "../assets/camera.svg"
 import logout from "../assets/logout.svg"
@@ -110,12 +111,13 @@ const ProfileWrapper = styled.main`
         }
 `
 
-function Profile({ user }) {
+function Profile({ user, setUser }) {
     const [photoPreview, setPhotoPreview] = useState('');
     const [photo, setPhoto] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getProfile = async () => {
@@ -175,9 +177,44 @@ function Profile({ user }) {
                     .then(res => res.json())
                     .then(res => {
                         console.log(res);
+                        localStorage.setItem("user", JSON.stringify({
+                            "userId": res.userId,
+                            "firstname": res.firstname,
+                            "lastname": res.lastname,
+                            "userImg": res.userImg,
+                            "token": user?.token
+                        }));
+                        setUser(JSON.parse(localStorage.getItem("user")))
+                        alert('Votre profil à bien été modifié');
                     })
             })
         setPhotoPreview('');
+    }
+
+    async function deleteProfile() {
+        await fetch(`http://localhost:4000/api/profile/${user?.userId}`, {
+            method: 'DELETE',
+            body: null,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user?.token}`
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                localStorage.clear();
+                setUser(null);
+                alert('Votre profil à bien été supprimé');
+                navigate("/");
+            })
+    }
+
+    function logoutProfile() {
+        localStorage.clear();
+        setUser(null);
+        alert('Vous êtes bien déconnecté');
+        navigate("/");
     }
 
     return (
@@ -242,12 +279,16 @@ function Profile({ user }) {
                     type="submit"
                     value="enregistrer"
                 />
-                <button className="logout-button">
+                <button
+                    className="logout-button"
+                    onClick={logoutProfile}>
                     <span>Me déconnecter</span>
                     <img src={logout} alt="logout profile" />
                 </button>
             </form>
-            <button className="delete-button">
+            <button
+                className="delete-button"
+                onClick={deleteProfile}>
                 <span>Supprimer le compte</span>
                 <img src={trash} alt="delete profile" />
             </button>

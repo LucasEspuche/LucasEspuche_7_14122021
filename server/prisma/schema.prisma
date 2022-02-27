@@ -22,7 +22,7 @@ model User {
 model Post {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
-  author      User      @relation("UserAuthorsPost", fields: [authorId], references: [id])
+  author      User      @relation("UserAuthorsPost", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    Int
   textContent String
   imgContent  String?
@@ -32,7 +32,7 @@ model Post {
 model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  author    User     @relation("UserAuthorsComment", fields: [authorId], references: [id])
+  author    User     @relation("UserAuthorsComment", fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
   post      Post     @relation("PostHasComment", fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
