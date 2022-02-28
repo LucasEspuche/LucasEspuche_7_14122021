@@ -27,6 +27,9 @@ const HomeWrapper = styled.main`
                 padding: 0px 10px;
                 cursor: pointer;
                 &.active {
+                    font-size: 28px;  
+                }
+                &:hover {
                     text-decoration: underline;
                 }
             }
@@ -44,13 +47,22 @@ const HomeWrapper = styled.main`
                 margin-bottom: 20px;
             }
             .button {
+                height: 52px;
                 text-align: center;
                 text-transform: uppercase;
                 font-weight: bold;
                 color: white;
                 background-color: #7093B2;
+                border: unset;
                 margin-bottom: 30px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+                transform: scale(1);
+                transition: 0.3s ease-in-out;
                 cursor: pointer;
+                &:hover {
+                    transform: scale(1.02);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+                }
             }
         }
     }
@@ -75,10 +87,12 @@ function Home({ setUser }) {
         <HomeWrapper>
             <section>
                 <ul>
-                    <li className={register ? "active" : null} onClick={handleClick} id="register">
+                    <li className={register ? "active" : null}
+                        onClick={handleClick} id="register">
                         Inscription
                     </li>
-                    <li className={login ? "active" : null} onClick={handleClick} id="login">
+                    <li className={login ? "active" : null}
+                        onClick={handleClick} id="login">
                         Connexion
                     </li>
                 </ul>

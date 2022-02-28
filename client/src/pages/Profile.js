@@ -141,7 +141,7 @@ function Profile({ user, setUser }) {
         const getProfile = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:4000/api/profile/${user?.userId}`, {
+                    'http://localhost:4000/api/profile/', {
                     headers: {
                         'Authorization': `Bearer ${user?.token}`
                     }
@@ -180,7 +180,7 @@ function Profile({ user, setUser }) {
             .then(res => res.json())
             .then(async data => {
 
-                await fetch(`http://localhost:4000/api/profile/${user?.userId}`, {
+                await fetch('http://localhost:4000/api/profile/', {
                     method: 'PUT',
                     body: JSON.stringify({
                         "userImg": data.url || null,
@@ -209,7 +209,7 @@ function Profile({ user, setUser }) {
     }
 
     async function deleteProfile() {
-        await fetch(`http://localhost:4000/api/profile/${user?.userId}`, {
+        await fetch('http://localhost:4000/api/profile/', {
             method: 'DELETE',
             body: null,
             headers: {

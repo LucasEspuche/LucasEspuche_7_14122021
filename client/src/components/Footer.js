@@ -11,7 +11,7 @@ const FooterWrapper = styled.footer`
     }
     p {
         font-weight: 500;
-        padding-block: 5px;
+        padding: 5px 40px;
     }
 `
 
