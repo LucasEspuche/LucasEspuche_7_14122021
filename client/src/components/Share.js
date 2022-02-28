@@ -69,6 +69,9 @@ const ShareWrapper = styled.section`
                         width: 25px;
                         margin-left: 7px;
                     }
+                    &:hover {
+                        text-decoration: underline;
+                    }
                 }
             }
             .submit-button {
@@ -78,7 +81,14 @@ const ShareWrapper = styled.section`
                 background-color: #7093B2;
                 padding: 0px 15px;
                 border-radius: 20px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+                transform: scale(1);
+                transition: 0.3s ease-in-out;
                 cursor: pointer;
+                &:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+                }
             }
         }
     }

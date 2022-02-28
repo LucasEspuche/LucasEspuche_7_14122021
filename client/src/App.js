@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
+import background from "./assets/background.jpg";
 import Header from "./components/Header";
 import Home from './pages/Home';
 import Thread from './pages/Thread';
 import Profile from './pages/Profile';
 import Error from "./pages/Error";
+import Footer from "./components/Footer";
 
 const GlobalStyle = createGlobalStyle`
     *,
@@ -21,10 +23,12 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
     }
     body {
+        background-image: url(${background});
         background-color: #F6F6F6;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        background-attachment: fixed;
         min-height: 100vh;
     }
     h1 {
@@ -69,6 +73,7 @@ function App() {
                     element={<Error />}
                 />
             </Routes>
+            <Footer />
         </BrowserRouter>
     );
 }

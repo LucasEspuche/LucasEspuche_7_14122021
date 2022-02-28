@@ -41,6 +41,11 @@ const CommentWrapper = styled.li`
                 height: 25px;
                 width: 25px;
                 margin-left: 7px;
+                transform: scale(1);
+                transition: 0.3s ease-in-out;
+                &:hover {
+                    transform: scale(1.2);
+                }
             }
         }
     }

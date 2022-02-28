@@ -64,18 +64,30 @@ const ProfileWrapper = styled.main`
                     width: 25px;
                     margin-left: 7px;
                 }
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
         .submit-button {
             width: 50%;
+            height: 52px;
             margin-inline: auto;
             text-align: center;
             text-transform: uppercase;
             font-weight: bold;
             color: white;
             background-color: #7093B2;
+            border: unset;
             margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+            transform: scale(1);
+            transition: 0.3s ease-in-out;
             cursor: pointer;
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            }
         }
         .logout-button {
             all: unset;
@@ -90,6 +102,9 @@ const ProfileWrapper = styled.main`
             img {
                 width: 25px;
                 margin-left: 7px;
+            }
+            &:hover {
+                text-decoration: underline;
             }
         }
     }
@@ -107,6 +122,9 @@ const ProfileWrapper = styled.main`
             img {
                 width: 25px;
                 margin-left: 7px;
+            }
+            &:hover {
+                text-decoration: underline;
             }
         }
 `
