@@ -33,7 +33,14 @@ exports.createComment = async (req, res, next) => {
 exports.deleteComment = async (req, res, next) => {
     const commentId = parseInt(req.params.id);
 
-    try {
+    const comment = await prisma.comment.findUnique({
+        where: {
+            id: commentId
+        }
+    });
+    const { userId, role } = req.auth;
+
+    if (comment.authorId === userId || role === "ADMIN") {
         await prisma.comment.delete({
             where: {
                 id: commentId
@@ -42,8 +49,5 @@ exports.deleteComment = async (req, res, next) => {
         res.status(200).json({
             message: 'Le commentaire à été supprimé !'
         })
-    }
-    catch (error) {
-        res.status(500).json({ error });
     }
 };

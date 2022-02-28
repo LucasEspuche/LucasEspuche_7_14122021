@@ -26,6 +26,9 @@ const HomeWrapper = styled.main`
                 font-weight: bold;
                 padding: 0px 10px;
                 cursor: pointer;
+                &.active {
+                    text-decoration: underline;
+                }
             }
         }
         form {
@@ -53,7 +56,7 @@ const HomeWrapper = styled.main`
     }
 `
 
-function Home() {
+function Home({ setUser }) {
     const [register, setRegister] = useState(false);
     const [login, setLogin] = useState(true);
 
@@ -72,15 +75,16 @@ function Home() {
         <HomeWrapper>
             <section>
                 <ul>
-                    <li onClick={handleClick} id="register">
+                    <li className={register ? "active" : null} onClick={handleClick} id="register">
                         Inscription
                     </li>
-                    <li onClick={handleClick} id="login">
+                    <li className={login ? "active" : null} onClick={handleClick} id="login">
                         Connexion
                     </li>
                 </ul>
                 {register && <Register />}
-                {login && <Login />}
+                {login && <Login
+                    setUser={setUser} />}
             </section>
         </HomeWrapper>
     );

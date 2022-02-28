@@ -3,9 +3,9 @@ const prisma = new PrismaClient();
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
-    cloud_name: 'desjoxkzn',
-    api_key: '217771482337439',
-    api_secret: 'YIINCJ74-YMSVuC3aktAxs6zHjk'
+    cloud_name: process.env.STORAGE_NAME,
+    api_key: process.env.STORAGE_KEY,
+    api_secret: process.env.STORAGE_SECRET
 });
 
 exports.getProfile = async (req, res, next) => {

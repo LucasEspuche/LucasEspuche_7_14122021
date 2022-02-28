@@ -27,7 +27,6 @@ function RegisterForm() {
                 }
                 else {
                     alert("Vous êtes bien enregistré");
-                    console.log(res);
                 }
             })
             .catch(error => {

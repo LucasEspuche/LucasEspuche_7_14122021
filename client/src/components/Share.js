@@ -98,6 +98,7 @@ function Share({ user, renderPost, setRenderPost }) {
     const [text, setText] = useState('');
     const [image, setImage] = useState('');
     const [imagePreview, setImagePreview] = useState('');
+    const [loading, setLoading] = useState(false);
 
     function loadPreview(file) {
         if (file) {
@@ -111,6 +112,8 @@ function Share({ user, renderPost, setRenderPost }) {
         const data = new FormData()
         data.append("file", image)
         data.append("upload_preset", "user_posts")
+
+        setLoading(true);
 
         await fetch("https://api.cloudinary.com/v1_1/desjoxkzn/image/upload", {
             method: "POST",
@@ -132,7 +135,7 @@ function Share({ user, renderPost, setRenderPost }) {
                 })
                     .then(res => res.json())
                     .then(res => {
-                        console.log(res);
+                        setLoading(false);
                         setRenderPost(renderPost + 1);
                     })
             })
@@ -194,12 +197,17 @@ function Share({ user, renderPost, setRenderPost }) {
                             />
                         </label>
                     </div>
-                    <input
+                    {loading ? <input
+                        className="submit-button"
+                        type="submit"
+                        value="envoi..."
+                        disabled={true}
+                    /> : <input
                         className="submit-button"
                         type="submit"
                         value="publier"
                         disabled={!text || !image}
-                    />
+                    />}
                 </div>
             </form>
         </ShareWrapper>

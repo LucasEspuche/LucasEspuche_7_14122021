@@ -31,7 +31,6 @@ function Card({ user, post, renderPost, setRenderPost }) {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res);
                 setRenderPost(renderPost + 1);
             })
         setComment('');
@@ -50,7 +49,6 @@ function Card({ user, post, renderPost, setRenderPost }) {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res);
                 setRenderPost(renderPost + 1);
             })
     }
@@ -70,7 +68,7 @@ function Card({ user, post, renderPost, setRenderPost }) {
                         <p>{postDate}</p>
                     </div>
                 </div>
-                {(user?.userId === post.authorId)
+                {(user?.userId === post.authorId || user?.role === "ADMIN")
                     && <button className="post-delete">
                         <img src={trash}
                             alt="supprimer post"

@@ -19,10 +19,10 @@ exports.signup = (req, res, next) => {
                 });
                 res.status(201).json(result)
             })
-            .catch(res.status(401).json({
+            .catch((error) => res.status(401).json({
                 error: {
                     type: "email",
-                    message: 'Email déjà enregistré !'
+                    message: `Email déjà enregistré ! ${error}`
                 }
             }));
     }
@@ -64,8 +64,12 @@ exports.login = async (req, res, next) => {
                         firstname: user.firstname,
                         lastname: user.lastname,
                         userImg: user.userImg,
+                        role: user.role,
                         token: jwt.sign(
-                            { userId: user.id },
+                            {
+                                userId: user.id,
+                                role: user.role
+                            },
                             process.env.ACCESS_TOKEN_SECRET,
                             { expiresIn: '24h' }
                         )

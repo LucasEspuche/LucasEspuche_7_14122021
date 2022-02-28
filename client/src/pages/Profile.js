@@ -194,7 +194,6 @@ function Profile({ user, setUser }) {
                 })
                     .then(res => res.json())
                     .then(res => {
-                        console.log(res);
                         localStorage.setItem("user", JSON.stringify({
                             "userId": res.userId,
                             "firstname": res.firstname,

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import logo from "../assets/logo.svg"
+import avatar from "../assets/avatar.png"
 
 const HeaderWrapper = styled.header`
     background-color: white;
@@ -22,11 +23,7 @@ const HeaderWrapper = styled.header`
     }
 `
 
-function Header() {
-    let userImg = null;
-    if (localStorage.getItem("user")) {
-        userImg = JSON.parse(localStorage.getItem("user")).userImg;
-    }
+function Header({ user }) {
 
     return (
         <HeaderWrapper>
@@ -37,13 +34,12 @@ function Header() {
                         alt="logo"
                     />
                 </Link>
-                {userImg &&
-                    <Link to="/profile">
-                        <img className='profile'
-                            src={userImg}
-                            alt="avatar"
-                        />
-                    </Link>}
+                {user ? <Link to="/profile">
+                    <img className='profile'
+                        src={user.userImg ? user.userImg : avatar}
+                        alt="avatar"
+                    />
+                </Link> : null}
             </nav>
         </HeaderWrapper>
     );

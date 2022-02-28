@@ -57,10 +57,11 @@ function App() {
     return (
         <BrowserRouter>
             <GlobalStyle />
-            <Header />
+            <Header user={user} />
             <Routes>
                 <Route path="/"
-                    exact element={<Home />}
+                    exact element={<Home
+                        setUser={setUser} />}
                 />
                 <Route path="/thread"
                     exact element={<Thread user={user} />}

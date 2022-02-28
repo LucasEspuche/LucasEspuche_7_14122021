@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LoginForm() {
+function LoginForm({ setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState({});
@@ -25,6 +25,7 @@ function LoginForm() {
                 }
                 else {
                     localStorage.setItem("user", JSON.stringify(res));
+                    setUser(res);
                     navigate("/thread");
                 };
             })

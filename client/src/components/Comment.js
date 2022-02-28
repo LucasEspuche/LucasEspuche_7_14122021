@@ -72,7 +72,6 @@ function Comment({ user, comment, renderPost, setRenderPost }) {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res);
                 setRenderPost(renderPost + 1);
             })
     }
@@ -92,7 +91,7 @@ function Comment({ user, comment, renderPost, setRenderPost }) {
             </div>
             <div className='comment'>
                 <p className="comment__text">{comment.content}</p>
-                {(user?.userId === comment.authorId)
+                {(user?.userId === comment.authorId || user?.role === "ADMIN")
                     && <button className="comment__delete">
                         <img src={remove}
                             alt="supprimer commentaire"
