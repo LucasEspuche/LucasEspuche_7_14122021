@@ -91,11 +91,10 @@ exports.deletePost = async (req, res, next) => {
                     where: {
                         id: postId
                     }
+                });
+                res.status(200).json({
+                    message: 'Le post à été supprimé !'
                 })
-                    .then(res.status(200).json({
-                        message: 'Le post à été supprimé !'
-                    }))
-                    .catch(error => res.status(500).json({ error }));
             }
             console.log(result, error)
         });
